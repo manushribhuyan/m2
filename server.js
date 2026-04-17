@@ -7,7 +7,7 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://mongo:27017/tasks");
+mongoose.connect(process.env.MONGO_URI);
 
 const Task = mongoose.model("Task", {
   title: String,
