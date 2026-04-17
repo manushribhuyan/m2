@@ -10,7 +10,8 @@ app.use(express.static("public"));
 mongoose.connect("mongodb://mongo:27017/tasks");
 
 const Task = mongoose.model("Task", {
-  title: String
+  title: String,
+  done: { type: Boolean, default: false }
 });
 
 app.get("/tasks", async (req, res) => {
@@ -27,4 +28,12 @@ app.delete("/tasks/:id", async (req, res) => {
   res.json({ success: true });
 });
 
+app.put('/tasks/:id', async (req, res) => {
+  const task = await Task.findById(req.params.id);
+  task.done = !task.done;
+  await task.save();
+  res.json(task);
+});
+
 app.listen(3000, () => console.log("Server running"));
+
